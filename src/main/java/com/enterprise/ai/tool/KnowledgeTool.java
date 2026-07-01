@@ -6,45 +6,35 @@ import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.stereotype.Component;
 
 import com.enterprise.ai.model.KnowledgeArticle;
-import com.enterprise.ai.service.MockKnowledgeBaseService;
+import com.enterprise.ai.service.KnowledgeService;
 
 @Component
 public class KnowledgeTool {
 
-    private final MockKnowledgeBaseService service;
+    private final KnowledgeService knowledgeService;
 
-    public KnowledgeTool(
-            MockKnowledgeBaseService service) {
-
-        this.service = service;
-
+    public KnowledgeTool(KnowledgeService knowledgeService) {
+        this.knowledgeService = knowledgeService;
     }
 
-    @Tool(description="""
-    		Search TPMS Knowledge Base.
+    @Tool(description = """
+            Search Knowledge Base.
 
-    		Input:
+            Input:
+            - Incident Category
+            - Incident Description
+            - Error Message
+            - KB Number
 
-    		Incident Category
+            Returns:
+            - Knowledge Article
+            - KB Number
+            - Troubleshooting Steps
+            - Resolution
+            """)
+    public List<KnowledgeArticle> searchKnowledge(String keyword) {
 
-    		or
-
-    		Incident Description
-
-    		Return
-
-    		KB ID
-
-    		Runbook
-
-    		Troubleshooting Steps
-
-    		Resolution
-    		""")
-    public List<KnowledgeArticle> searchKnowledge(
-            String keyword) {
-
-        return service.searchArticles(keyword);
+        return knowledgeService.searchArticles(keyword);
 
     }
 

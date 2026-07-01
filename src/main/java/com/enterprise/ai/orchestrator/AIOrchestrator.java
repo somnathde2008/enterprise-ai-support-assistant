@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.enterprise.ai.dto.IncidentAnalysisResponse;
 import com.enterprise.ai.model.KnowledgeArticle;
 import com.enterprise.ai.model.Recommendation;
-import com.enterprise.ai.service.MockKnowledgeBaseService;
+import com.enterprise.ai.service.KnowledgeService;
 import com.enterprise.ai.service.MockRecommendationService;
 import com.enterprise.ai.tool.IncidentTool;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,7 +24,7 @@ public class AIOrchestrator {
 
     private final IncidentTool incidentTool;
 
-    private final MockKnowledgeBaseService knowledgeService;
+    private final KnowledgeService knowledgeService;
 
     private final MockRecommendationService recommendationService;
 
@@ -39,7 +39,7 @@ public class AIOrchestrator {
 
             IncidentTool incidentTool,
 
-            MockKnowledgeBaseService knowledgeService,
+            KnowledgeService knowledgeService,
 
             MockRecommendationService recommendationService,
 
