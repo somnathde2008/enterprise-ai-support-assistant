@@ -29,6 +29,5 @@ An AI-powered Production Support Assistant built using Spring AI and Ollama.
 ## Roadmap
 
 - GLPI Integration
-- React Frontend
 - Azure Deployment
 - Azure OpenAI Support
