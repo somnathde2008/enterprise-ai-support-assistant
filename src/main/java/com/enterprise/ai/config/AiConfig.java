@@ -4,6 +4,7 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.enterprise.ai.tool.IncidentSimilarityTool;
 import com.enterprise.ai.tool.IncidentTool;
 import com.enterprise.ai.tool.KnowledgeTool;
 import com.enterprise.ai.tool.RecommendationTool;
@@ -20,7 +21,8 @@ public class AiConfig {
 	        ChatClient.Builder builder,
 	        IncidentTool incidentTool,
 	        KnowledgeTool knowledgeTool,
-	        RecommendationTool recommendationTool) {
+	        RecommendationTool recommendationTool,
+	        IncidentSimilarityTool incidentSimilarityTool) {
 
 	    return builder
 
@@ -68,6 +70,9 @@ public class AiConfig {
 
 	8. getAllIncidents()
 	Returns all incidents.
+	
+	9. findSimilarIncidents()
+	  Returns similar historical incidents from GLPI.
 
 	====================================
 	General Rules
@@ -195,23 +200,7 @@ public class AiConfig {
 
 	Return the tool response.
 
-	====================================
-	List Incident Rules
-	====================================
 	
-	If the user asks to list all incidents,
-	
-	You MUST call getAllIncidents().
-	
-	Display every incident returned by the tool.
-	
-	Do NOT summarize.
-	
-	If there are no incidents,
-	say:
-	
-	No incidents available.
-
 	====================================
 	Tool Output Rules
 	====================================
@@ -219,8 +208,9 @@ public class AiConfig {
 	For createIncident(),
 	getIncident(),
 	searchIncidents(),
-	getAllIncidents(),
-	and updateIncidentStatus(),
+	updateIncidentStatus(),
+	assignIncident(),
+	and resolveIncident(),
 	
 	display all fields returned by the tool.
 	
@@ -245,13 +235,11 @@ public class AiConfig {
 	
 	Only use information returned by the tools.
 
-	""")
-
-	            .defaultTools(
-	                    incidentTool,
-	                    knowledgeTool,
-	                    recommendationTool)
-
+	""").defaultTools(
+	        incidentTool,
+	        knowledgeTool,
+	        recommendationTool,
+	        incidentSimilarityTool)
 	            .build();
 	}
 
