@@ -281,16 +281,32 @@ public class GlpiApiClient {
                     createHeaders(sessionToken);
 
             Map<String, Object> response= webClient.get()
-                    .uri(glpiProperties.getBaseUrl()
-                            + "/search/KnowbaseItem"
-                            + "?criteria[0][field]=1"
-                            + "&criteria[0][searchtype]=contains"
-                            + "&criteria[0][value]="
-                            + keyword)
+            		.uri(glpiProperties.getBaseUrl()
+            		        + "/search/KnowbaseItem"
+            		        + "?criteria[0][field]=6"
+            		        + "&criteria[0][searchtype]=contains"
+            		        + "&criteria[0][value]=" + keyword
+            		        + "&forcedisplay[0]=2"
+            		        + "&forcedisplay[1]=6"
+            		        + "&forcedisplay[2]=7")
                     .headers(h -> h.addAll(headers))
-                    .retrieve()
-                    .bodyToMono(
-                            new ParameterizedTypeReference<Map<String,Object>>() {})
+                    .exchangeToMono(clientResponse -> {
+
+                        if (clientResponse.statusCode().is2xxSuccessful()) {
+
+                            return clientResponse.bodyToMono(
+                                    new ParameterizedTypeReference<Map<String, Object>>() {});
+                        }
+
+                        return clientResponse.bodyToMono(String.class)
+                                .flatMap(body -> {
+                                    System.out.println("GLPI ERROR:");
+                                    System.out.println(body);
+                                    return reactor.core.publisher.Mono.error(
+                                            new RuntimeException(body));
+                                });
+
+                    })
                     .block();
             
             System.out.println("========== GLPI KNOWLEDGE SEARCH ==========");

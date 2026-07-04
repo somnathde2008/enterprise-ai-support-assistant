@@ -11,14 +11,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.enterprise.ai.model.Incident;
+import com.enterprise.ai.model.KnowledgeArticle;
 import com.enterprise.ai.service.IncidentService;
+import com.enterprise.ai.service.KnowledgeService;
 
 @RestController
 @RequestMapping("/glpi")
 public class GlpiTestController {
 
-    @Autowired
+   
     private IncidentService incidentService;
+    private final KnowledgeService knowledgeService;
+    
+    public GlpiTestController(
+            IncidentService incidentService,
+            KnowledgeService knowledgeService) {
+
+        this.incidentService = incidentService;
+        this.knowledgeService = knowledgeService;
+    }
 
     @GetMapping("/test")
     public String test() {
@@ -50,5 +61,14 @@ public class GlpiTestController {
             @RequestParam String keyword) {
 
         return incidentService.searchIncidents(keyword);
+    }
+    
+    
+    @GetMapping("/knowledge/search")
+    public List<KnowledgeArticle> searchKnowledge(
+            @RequestParam String keyword) {
+
+        return knowledgeService.searchKnowledge(keyword);
+
     }
 }

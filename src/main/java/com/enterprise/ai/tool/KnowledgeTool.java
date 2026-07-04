@@ -20,6 +20,12 @@ public class KnowledgeTool {
     @Tool(description = """
             Search Knowledge Base.
 
+            Use this tool to search knowledge articles,
+            troubleshooting guides,
+            known errors,
+            workarounds,
+            and resolutions.
+
             Input:
             - Incident Category
             - Incident Description
@@ -27,14 +33,14 @@ public class KnowledgeTool {
             - KB Number
 
             Returns:
-            - Knowledge Article
-            - KB Number
-            - Troubleshooting Steps
+            - Matching Knowledge Articles
             - Resolution
+            - Troubleshooting Steps
             """)
-    public List<KnowledgeArticle> searchKnowledge(String keyword) {
+    public List<KnowledgeArticle> searchKnowledge(
+            String keyword) {
 
-        return knowledgeService.searchArticles(keyword);
+        return knowledgeService.searchKnowledge(keyword);
 
     }
 

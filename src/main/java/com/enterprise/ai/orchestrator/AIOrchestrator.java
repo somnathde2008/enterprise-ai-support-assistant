@@ -87,9 +87,8 @@ public class AIOrchestrator {
             long kbStart = System.currentTimeMillis();
 
             List<KnowledgeArticle> articles =
-                    knowledgeService.searchArticlesByCategory(
+                    knowledgeService.searchKnowledge(
                             analysis.getCategory());
-
             response.setKnowledgeArticles(articles);
 
             log.info("Knowledge Search completed in {} ms",

@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.text.StringEscapeUtils;
+import org.jsoup.Jsoup;
 import org.springframework.stereotype.Component;
 
 import com.enterprise.ai.model.KnowledgeArticle;
@@ -42,18 +44,27 @@ public class GlpiKnowledgeProvider
         List<KnowledgeArticle> result =
                 new ArrayList<>();
 
-        for (Map<String,Object> row : data) {
+        for (Map<String, Object> row : data) {
 
-            KnowledgeArticle article =
-                    new KnowledgeArticle();
+            System.out.println(row);
+
+            KnowledgeArticle article = new KnowledgeArticle();
 
             article.setId(
                     Long.valueOf(
-                            row.get("2").toString()));
+                            row.get(GlpiKnowledgeSearchFields.ID).toString()));
 
             article.setTitle(
                     String.valueOf(
-                            row.get("1")));
+                            row.get(GlpiKnowledgeSearchFields.SUBJECT)));
+
+            String content = String.valueOf(
+                    row.get(GlpiKnowledgeSearchFields.CONTENT));
+
+            content = StringEscapeUtils.unescapeHtml4(content);
+            content = Jsoup.parse(content).text();
+
+            article.setContent(content);
 
             result.add(article);
         }
