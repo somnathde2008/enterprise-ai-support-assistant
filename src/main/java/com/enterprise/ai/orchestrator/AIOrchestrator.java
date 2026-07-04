@@ -12,7 +12,7 @@ import com.enterprise.ai.dto.IncidentAnalysisResponse;
 import com.enterprise.ai.model.KnowledgeArticle;
 import com.enterprise.ai.model.Recommendation;
 import com.enterprise.ai.service.KnowledgeService;
-import com.enterprise.ai.service.MockRecommendationService;
+import com.enterprise.ai.service.RecommendationService;
 import com.enterprise.ai.tool.IncidentTool;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -26,7 +26,7 @@ public class AIOrchestrator {
 
     private final KnowledgeService knowledgeService;
 
-    private final MockRecommendationService recommendationService;
+    private final RecommendationService recommendationService;
 
     private final ChatClient jsonChatClient;
 
@@ -41,7 +41,7 @@ public class AIOrchestrator {
 
             KnowledgeService knowledgeService,
 
-            MockRecommendationService recommendationService,
+            RecommendationService recommendationService,
 
             ObjectMapper objectMapper) {
 

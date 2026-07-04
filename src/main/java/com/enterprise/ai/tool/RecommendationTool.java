@@ -4,15 +4,15 @@ import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.stereotype.Component;
 
 import com.enterprise.ai.model.Recommendation;
-import com.enterprise.ai.service.MockRecommendationService;
+import com.enterprise.ai.service.RecommendationService;
 
 @Component
 public class RecommendationTool {
 
-    private final MockRecommendationService service;
+    private final RecommendationService service;
 
     public RecommendationTool(
-            MockRecommendationService service) {
+            RecommendationService service) {
 
         this.service = service;
 
