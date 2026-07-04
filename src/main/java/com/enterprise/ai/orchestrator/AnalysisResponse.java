@@ -6,7 +6,7 @@ import com.enterprise.ai.dto.IncidentAnalysisResponse;
 import com.enterprise.ai.model.KnowledgeArticle;
 import com.enterprise.ai.model.Recommendation;
 
-public class HybridResponse {
+public class AnalysisResponse {
 
     private String incidentNumber;
 

@@ -3,7 +3,7 @@ package com.enterprise.ai.controller;
 import org.springframework.web.bind.annotation.*;
 
 import com.enterprise.ai.dto.ChatRequest;
-import com.enterprise.ai.orchestrator.HybridResponse;
+import com.enterprise.ai.orchestrator.AnalysisResponse;
 import com.enterprise.ai.service.ChatService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,7 +36,7 @@ public class ChatController {
      */
     //@Operation(summary = "Analyze TPMS Incident")
     @PostMapping("/hybrid/analyze")
-    public HybridResponse analyzeIncident(
+    public AnalysisResponse analyzeIncident(
             @RequestParam String incidentNumber) {
 
         return chatService.analyzeIncident(incidentNumber);

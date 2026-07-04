@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.enterprise.ai.orchestrator.AIOrchestrator;
-import com.enterprise.ai.orchestrator.HybridResponse;
+import com.enterprise.ai.orchestrator.AnalysisResponse;
 
 @Service
 public class ChatService {
@@ -48,7 +48,7 @@ public class ChatService {
     }
 
     // Hybrid Flow
-    public HybridResponse analyzeIncident(String incidentNumber) {
+    public AnalysisResponse analyzeIncident(String incidentNumber) {
 
         return orchestrator.analyzeIncident(incidentNumber);
 

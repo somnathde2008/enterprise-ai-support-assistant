@@ -52,11 +52,11 @@ public class AIOrchestrator {
         this.objectMapper = objectMapper;
     }
 
-    public HybridResponse analyzeIncident(String incidentNumber) {
+    public AnalysisResponse analyzeIncident(String incidentNumber) {
 
         log.info("Starting Hybrid Analysis for Incident : {}", incidentNumber);
 
-        HybridResponse response = new HybridResponse();
+        AnalysisResponse response = new AnalysisResponse();
 
         response.setIncidentNumber(incidentNumber);
 
