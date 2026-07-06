@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import com.enterprise.ai.model.Incident;
 import com.enterprise.ai.service.IncidentAnalysisService;
 import com.enterprise.ai.service.IncidentService;
+import com.enterprise.ai.dto.IncidentClassificationResponse;
+import com.enterprise.ai.service.IncidentClassificationService;
 
 @Component
 public class IncidentTool {
@@ -15,14 +17,39 @@ public class IncidentTool {
 	private final IncidentService incidentService;
 
 	private final IncidentAnalysisService incidentAnalysisService;
+	
+	private final IncidentClassificationService incidentClassificationService;
 
 	public IncidentTool(
 	        IncidentService incidentService,
-	        IncidentAnalysisService incidentAnalysisService) {
+	        IncidentAnalysisService incidentAnalysisService,
+	        IncidentClassificationService incidentClassificationService) {
 
 	    this.incidentService = incidentService;
 	    this.incidentAnalysisService = incidentAnalysisService;
+	    this.incidentClassificationService = incidentClassificationService;
 	}
+	
+	
+	@Tool(description = """
+	        Classify an IT incident.
+
+	        Predict:
+	        - Category
+	        - Priority
+	        - Assignment Group
+	        - Confidence
+	        - Reason
+	        """)
+	public IncidentClassificationResponse classifyIncident(
+	        String shortDescription,
+	        String description) {
+
+	    return incidentClassificationService.classifyIncident(
+	            shortDescription,
+	            description);
+	}
+	
 
     @Tool(description = """
             Create a new IT incident in GLPI.

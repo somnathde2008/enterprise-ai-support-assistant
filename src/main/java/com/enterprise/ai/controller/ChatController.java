@@ -1,18 +1,22 @@
 package com.enterprise.ai.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.enterprise.ai.dto.ChatRequest;
 import com.enterprise.ai.orchestrator.AnalysisResponse;
 import com.enterprise.ai.service.ChatService;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/chat")
-//@Tag(name = "TPMS AI Chatbot")
 public class ChatController {
+
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(ChatController.class);
 
     private final ChatService chatService;
 
@@ -21,25 +25,51 @@ public class ChatController {
     }
 
     /**
-     * AI Tool Calling Endpoint
-     * Uses Spring AI + Ollama + Tool Calling
+     * AI Chat Endpoint.
+     *
+     * Supports Spring AI Tool Calling.
+     *
+     * @param request Chat Request
+     * @return AI Response
      */
     @PostMapping
-    public String chat(@RequestBody ChatRequest request) {
+    public ResponseEntity<String> chat(
+            @Valid @RequestBody ChatRequest request) {
 
-        return chatService.chat(request.getMessage());
+        LOGGER.info("Received AI chat request.");
+
+        String response =
+                chatService.chat(
+                        request.getMessage());
+
+        LOGGER.info("AI chat request completed successfully.");
+
+        return ResponseEntity.ok(response);
 
     }
 
     /**
-     * Hybrid AI Orchestrator Endpoint
+     * Hybrid AI Incident Analysis.
+     *
+     * @param incidentNumber Incident Number
+     * @return Hybrid Analysis Response
      */
-    //@Operation(summary = "Analyze TPMS Incident")
     @PostMapping("/hybrid/analyze")
-    public AnalysisResponse analyzeIncident(
+    public ResponseEntity<AnalysisResponse> analyzeIncident(
             @RequestParam String incidentNumber) {
 
-        return chatService.analyzeIncident(incidentNumber);
+        LOGGER.info(
+                "Received Hybrid Incident Analysis request for Incident={}",
+                incidentNumber);
+
+        AnalysisResponse response =
+                chatService.analyzeIncident(
+                        incidentNumber);
+
+        LOGGER.info(
+                "Hybrid Incident Analysis completed successfully.");
+
+        return ResponseEntity.ok(response);
 
     }
 

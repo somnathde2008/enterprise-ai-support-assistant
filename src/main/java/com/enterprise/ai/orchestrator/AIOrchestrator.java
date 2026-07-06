@@ -19,8 +19,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class AIOrchestrator {
 
-    private static final Logger log =
-            LoggerFactory.getLogger(AIOrchestrator.class);
+	private static final Logger LOGGER =
+	        LoggerFactory.getLogger(AIOrchestrator.class);
 
     private final IncidentTool incidentTool;
 
@@ -54,7 +54,7 @@ public class AIOrchestrator {
 
     public AnalysisResponse analyzeIncident(String incidentNumber) {
 
-        log.info("Starting Hybrid Analysis for Incident : {}", incidentNumber);
+    	LOGGER.info("Starting Hybrid Analysis for Incident : {}", incidentNumber);
 
         AnalysisResponse response = new AnalysisResponse();
 
@@ -66,7 +66,7 @@ public class AIOrchestrator {
 
             long aiStart = System.currentTimeMillis();
 
-            log.info("Calling AI Model...");
+            LOGGER.info("Calling AI Model...");
 
             String aiResponse = jsonChatClient
                     .prompt()
@@ -74,7 +74,7 @@ public class AIOrchestrator {
                     .call()
                     .content();
 
-            log.info("AI completed in {} ms",
+            LOGGER.info("AI completed in {} ms",
                     System.currentTimeMillis() - aiStart);
 
             IncidentAnalysisResponse analysis =
@@ -91,7 +91,7 @@ public class AIOrchestrator {
                             analysis.getCategory());
             response.setKnowledgeArticles(articles);
 
-            log.info("Knowledge Search completed in {} ms",
+            LOGGER.info("Knowledge Search completed in {} ms",
                     System.currentTimeMillis() - kbStart);
 
             long recStart = System.currentTimeMillis();
@@ -109,16 +109,16 @@ public class AIOrchestrator {
 
             response.setRecommendation(recommendation);
 
-            log.info("Recommendation generated in {} ms",
+            LOGGER.info("Recommendation generated in {} ms",
                     System.currentTimeMillis() - recStart);
 
-            log.info("Hybrid Analysis completed successfully.");
+            LOGGER.info("Hybrid Analysis completed successfully.");
 
             return response;
 
         } catch (Exception ex) {
 
-            log.error("Hybrid Analysis Failed for Incident : {}",
+        	LOGGER.error("Hybrid Analysis Failed for Incident : {}",
                     incidentNumber,
                     ex);
 
