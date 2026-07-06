@@ -3,6 +3,7 @@ package com.enterprise.ai.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.enterprise.ai.dto.IncidentClassificationResponse;
@@ -16,8 +17,13 @@ public class IncidentClassificationService {
 
     private final ChatClient chatClient;
 
-    public IncidentClassificationService(ChatClient chatClient) {
+    public IncidentClassificationService(
+
+            @Qualifier("jsonChatClient")
+            ChatClient chatClient) {
+
         this.chatClient = chatClient;
+
     }
 
     /**

@@ -40,19 +40,13 @@ public class AiConfig {
     // Hybrid JSON Client
     // ==========================================================
 
-    @Bean("jsonChatClient")
-    ChatClient jsonChatClient(
-            ChatClient.Builder builder,
-            IncidentTool incidentTool) {
+	@Bean("jsonChatClient")
+	ChatClient jsonChatClient(
+	        ChatClient.Builder builder) {
 
-        return builder
-        		.defaultSystem(
-        		        JsonAnalysisPrompt.SYSTEM_PROMPT)
-
-                .defaultTools(
-                        incidentTool)
-
-                .build();
-    }
+	    return builder
+	            .defaultSystem(JsonAnalysisPrompt.SYSTEM_PROMPT)
+	            .build();
+	}
 
 }
