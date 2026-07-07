@@ -6,6 +6,7 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.enterprise.ai.memory.ConversationMemoryService;
 import com.enterprise.ai.orchestrator.AIOrchestrator;
 import com.enterprise.ai.orchestrator.AnalysisResponse;
 
@@ -19,58 +20,55 @@ public class ChatService {
 
     private final AIOrchestrator orchestrator;
 
+    private final ConversationMemoryService conversationMemoryService;
+
     public ChatService(
+
             @Qualifier("agentChatClient")
             ChatClient agentChatClient,
-            AIOrchestrator orchestrator) {
+
+            AIOrchestrator orchestrator,
+
+            ConversationMemoryService conversationMemoryService) {
 
         this.agentChatClient = agentChatClient;
         this.orchestrator = orchestrator;
+        this.conversationMemoryService = conversationMemoryService;
     }
-
     /**
      * Handles normal AI chat requests.
      *
      * @param message User message
      * @return AI response
      */
-    public String chat(String message) {
+    public String chat(
+            String sessionId,
+            String message) {
 
-        if (message == null || message.isBlank()) {
-            throw new IllegalArgumentException(
-                    "Message cannot be null or empty.");
-        }
+    	LOGGER.info("Received chat request. SessionId={}", sessionId);
 
-        LOGGER.info("Received chat request.");
+        long start = System.currentTimeMillis();
 
-        long startTime = System.currentTimeMillis();
+        conversationMemoryService.saveUserMessage(
+                sessionId,
+                message);
 
-        try {
+        String response =
+                agentChatClient
+                        .prompt()
+                        .user(message)
+                        .call()
+                        .content();
 
-            String response =
-                    agentChatClient.prompt()
-                            .user(message)
-                            .call()
-                            .content();
+        conversationMemoryService.saveAssistantMessage(
+                sessionId,
+                response);
 
-            LOGGER.info(
-                    "Chat request completed successfully in {} ms.",
-                    System.currentTimeMillis() - startTime);
+        LOGGER.info(
+                "Chat completed in {} ms",
+                System.currentTimeMillis() - start);
 
-            return response;
-
-        } catch (Exception ex) {
-
-            LOGGER.error(
-                    "Error while processing AI chat request.",
-                    ex);
-
-            throw new RuntimeException(
-                    "Unable to process AI request.",
-                    ex);
-
-        }
-
+        return response;
     }
 
     /**

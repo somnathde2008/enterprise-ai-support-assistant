@@ -40,6 +40,8 @@ public class ChatController {
 
         String response =
                 chatService.chat(
+                		request.getSessionId(),
+
                         request.getMessage());
 
         LOGGER.info("AI chat request completed successfully.");

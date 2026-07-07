@@ -6,13 +6,27 @@ public class ConversationMessage {
 
     private Long id;
 
+    private String sessionId;
+
     private String conversationId;
 
-    private String role;
+    private String messageRole;
 
     private String message;
 
-    private LocalDateTime createdTime;
+    private String messageType;
+
+    private String toolName;
+
+    private String agentName;
+
+    private String metadata;
+
+    private Integer tokenCount;
+
+    private Long responseTimeMs;
+
+    private LocalDateTime createdAt;
 
     public ConversationMessage() {
     }
@@ -25,6 +39,14 @@ public class ConversationMessage {
         this.id = id;
     }
 
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+
     public String getConversationId() {
         return conversationId;
     }
@@ -33,12 +55,12 @@ public class ConversationMessage {
         this.conversationId = conversationId;
     }
 
-    public String getRole() {
-        return role;
+    public String getMessageRole() {
+        return messageRole;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setMessageRole(String messageRole) {
+        this.messageRole = messageRole;
     }
 
     public String getMessage() {
@@ -49,11 +71,60 @@ public class ConversationMessage {
         this.message = message;
     }
 
-    public LocalDateTime getCreatedTime() {
-        return createdTime;
+    public String getMessageType() {
+        return messageType;
     }
 
-    public void setCreatedTime(LocalDateTime createdTime) {
-        this.createdTime = createdTime;
+    public void setMessageType(String messageType) {
+        this.messageType = messageType;
     }
+
+    public String getToolName() {
+        return toolName;
+    }
+
+    public void setToolName(String toolName) {
+        this.toolName = toolName;
+    }
+
+    public String getAgentName() {
+        return agentName;
+    }
+
+    public void setAgentName(String agentName) {
+        this.agentName = agentName;
+    }
+
+    public String getMetadata() {
+        return metadata;
+    }
+
+    public void setMetadata(String metadata) {
+        this.metadata = metadata;
+    }
+
+    public Integer getTokenCount() {
+        return tokenCount;
+    }
+
+    public void setTokenCount(Integer tokenCount) {
+        this.tokenCount = tokenCount;
+    }
+
+    public Long getResponseTimeMs() {
+        return responseTimeMs;
+    }
+
+    public void setResponseTimeMs(Long responseTimeMs) {
+        this.responseTimeMs = responseTimeMs;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
 }

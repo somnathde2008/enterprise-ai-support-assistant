@@ -2,7 +2,9 @@ package com.enterprise.ai.dto;
 
 public class ChatRequest {
 
-    private String message;
+	private String sessionId;
+
+	private String message;
 
     public ChatRequest() {
     }
@@ -14,5 +16,13 @@ public class ChatRequest {
     public void setMessage(String message) {
         this.message = message;
     }
+
+	public String getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
+	}
 
 }
