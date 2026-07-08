@@ -6,6 +6,7 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.enterprise.ai.memory.ConversationContextService;
 import com.enterprise.ai.memory.ConversationMemoryService;
 import com.enterprise.ai.orchestrator.AIOrchestrator;
 import com.enterprise.ai.orchestrator.AnalysisResponse;
@@ -21,6 +22,8 @@ public class ChatService {
     private final AIOrchestrator orchestrator;
 
     private final ConversationMemoryService conversationMemoryService;
+    
+    private final ConversationContextService contextService;
 
     public ChatService(
 
@@ -29,11 +32,16 @@ public class ChatService {
 
             AIOrchestrator orchestrator,
 
-            ConversationMemoryService conversationMemoryService) {
+            ConversationMemoryService conversationMemoryService,
+
+            ConversationContextService contextService) {
 
         this.agentChatClient = agentChatClient;
         this.orchestrator = orchestrator;
-        this.conversationMemoryService = conversationMemoryService;
+        this.conversationMemoryService =
+                conversationMemoryService;
+
+        this.contextService = contextService;
     }
     /**
      * Handles normal AI chat requests.
@@ -45,24 +53,28 @@ public class ChatService {
             String sessionId,
             String message) {
 
-    	LOGGER.info("Received chat request. SessionId={}", sessionId);
+        LOGGER.info(
+                "Chat started. Session={}",
+                sessionId);
 
-        long start = System.currentTimeMillis();
+        long start =
+                System.currentTimeMillis();
 
-        conversationMemoryService.saveUserMessage(
-                sessionId,
-                message);
+        String prompt = contextService.buildContext(sessionId, message);
+
+        conversationMemoryService.saveUserMessage(sessionId, message);
 
         String response =
                 agentChatClient
                         .prompt()
-                        .user(message)
+                        .user(prompt)
                         .call()
                         .content();
 
-        conversationMemoryService.saveAssistantMessage(
-                sessionId,
-                response);
+        conversationMemoryService
+                .saveAssistantMessage(
+                        sessionId,
+                        response);
 
         LOGGER.info(
                 "Chat completed in {} ms",

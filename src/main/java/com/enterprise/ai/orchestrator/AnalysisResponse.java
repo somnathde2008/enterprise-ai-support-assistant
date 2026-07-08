@@ -3,6 +3,7 @@ package com.enterprise.ai.orchestrator;
 import java.util.List;
 
 import com.enterprise.ai.dto.IncidentAnalysisResponse;
+import com.enterprise.ai.model.Incident;
 import com.enterprise.ai.model.KnowledgeArticle;
 import com.enterprise.ai.model.Recommendation;
 
@@ -17,6 +18,8 @@ public class AnalysisResponse {
     private List<KnowledgeArticle> knowledgeArticles;
 
     private Recommendation recommendation;
+    
+    private List<Incident> similarIncidents;
 
     public String getIncidentNumber() {
         return incidentNumber;
@@ -54,5 +57,13 @@ public class AnalysisResponse {
     public void setRecommendation(Recommendation recommendation) {
         this.recommendation = recommendation;
     }
+
+	public List<Incident> getSimilarIncidents() {
+		return similarIncidents;
+	}
+
+	public void setSimilarIncidents(List<Incident> similarIncidents) {
+		this.similarIncidents = similarIncidents;
+	}
 
 }

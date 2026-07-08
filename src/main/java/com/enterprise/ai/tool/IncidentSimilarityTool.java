@@ -20,22 +20,20 @@ public class IncidentSimilarityTool {
     }
 
     @Tool(description = """
-            Find incidents similar to the user's problem.
+            Find historical incidents similar to an existing incident.
 
-            Use this tool when:
-            - User asks for similar incidents
-            - User wants historical incidents
-            - User asks whether the issue happened before
-            - User asks to find previous incidents
+            Input:
+            - Incident Number
 
-            Returns matching incidents.
+            Returns:
+            - Top similar incidents
             """)
     public List<Incident> findSimilarIncidents(
-            String keyword) {
+            String incidentNumber) {
 
-        return incidentSimilarityService
-                .findSimilarIncidents(keyword);
-
+        return incidentSimilarityService.findSimilarIncidents(
+                incidentNumber,
+                5);
     }
 
 }

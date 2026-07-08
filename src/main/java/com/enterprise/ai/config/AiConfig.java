@@ -14,39 +14,46 @@ import com.enterprise.ai.tool.RecommendationTool;
 @Configuration
 public class AiConfig {
 
-	// ==========================================================
-	// Normal Chat Agent
-	// ==========================================================
-
-	@Bean("agentChatClient")
-	ChatClient agentChatClient(
-	        ChatClient.Builder builder,
-	        IncidentTool incidentTool,
-	        KnowledgeTool knowledgeTool,
-	        RecommendationTool recommendationTool,
-	        IncidentSimilarityTool incidentSimilarityTool) {
-
-	    return builder
-	    		.defaultSystem(
-	    		        AgentSystemPrompt.SYSTEM_PROMPT).defaultTools(
-	        incidentTool,
-	        knowledgeTool,
-	        recommendationTool,
-	        incidentSimilarityTool)
-	            .build();
-	}
-
     // ==========================================================
-    // Hybrid JSON Client
+    // AI Agent (Tool Calling)
     // ==========================================================
 
-	@Bean("jsonChatClient")
-	ChatClient jsonChatClient(
-	        ChatClient.Builder builder) {
+    @Bean("agentChatClient")
+    ChatClient agentChatClient(
+            ChatClient.Builder builder,
+            IncidentTool incidentTool,
+            KnowledgeTool knowledgeTool,
+            RecommendationTool recommendationTool,
+            IncidentSimilarityTool incidentSimilarityTool) {
 
-	    return builder
-	            .defaultSystem(JsonAnalysisPrompt.SYSTEM_PROMPT)
-	            .build();
-	}
+        return builder
+
+                .defaultSystem(
+                        AgentSystemPrompt.SYSTEM_PROMPT)
+
+                .defaultTools(
+                        incidentTool,
+                        knowledgeTool,
+                        recommendationTool,
+                        incidentSimilarityTool)
+
+                .build();
+    }
+
+    // ==========================================================
+    // JSON Analysis Client
+    // ==========================================================
+
+    @Bean("jsonChatClient")
+    ChatClient jsonChatClient(
+            ChatClient.Builder builder) {
+
+        return builder
+
+                .defaultSystem(
+                        JsonAnalysisPrompt.SYSTEM_PROMPT)
+
+                .build();
+    }
 
 }

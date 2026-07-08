@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.enterprise.ai.dto.IncidentAnalysisResponse;
+import com.enterprise.ai.model.Incident;
 import com.enterprise.ai.model.KnowledgeArticle;
 import com.enterprise.ai.model.Recommendation;
+import com.enterprise.ai.service.IncidentSimilarityService;
 import com.enterprise.ai.service.KnowledgeService;
 import com.enterprise.ai.service.RecommendationService;
 import com.enterprise.ai.tool.IncidentTool;
@@ -29,6 +31,8 @@ public class AIOrchestrator {
     private final RecommendationService recommendationService;
 
     private final ChatClient jsonChatClient;
+    
+    private final IncidentSimilarityService incidentSimilarityService;
 
     private final ObjectMapper objectMapper;
 
@@ -43,13 +47,15 @@ public class AIOrchestrator {
 
             RecommendationService recommendationService,
 
-            ObjectMapper objectMapper) {
+            ObjectMapper objectMapper,
+            IncidentSimilarityService incidentSimilarityService) {
 
         this.jsonChatClient = jsonChatClient;
         this.incidentTool = incidentTool;
         this.knowledgeService = knowledgeService;
         this.recommendationService = recommendationService;
         this.objectMapper = objectMapper;
+        this.incidentSimilarityService=incidentSimilarityService;
     }
 
     public AnalysisResponse analyzeIncident(String incidentNumber) {
@@ -85,6 +91,24 @@ public class AIOrchestrator {
             response.setAnalysis(analysis);
 
             long kbStart = System.currentTimeMillis();
+            
+            
+            long similarityStart = System.currentTimeMillis();
+
+            LOGGER.info(
+                    "Searching similar incidents...");
+
+            List<Incident> similarIncidents =
+                    incidentSimilarityService.findSimilarIncidents(
+                            incidentNumber,
+                            5);
+
+            response.setSimilarIncidents(
+                    similarIncidents);
+
+            LOGGER.info(
+                    "Similar Incident Search completed in {} ms",
+                    System.currentTimeMillis() - similarityStart);
 
             List<KnowledgeArticle> articles =
                     knowledgeService.searchKnowledge(
